@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youma.dao.DrugDao">
+    <insert id="drugAdd" parameterType="Drug">
+        insert drug (drugID, drugName, description,drugUrl)
+        values (#{drugID}, #{drugName}, #{description}, #{drugUrl})
+    </insert>
+    <update id="drugUpdate" parameterType="Drug">
+        update drug
+        set drugName    = #{drugName},
+            description = #{description}
+        where drugID = #{drugID}
+    </update>
+    <delete id="drugDel" parameterType="string">
+        delete
+        from drug
+        where drugID = #{drugID}
+    </delete>
+    <select id="drugCount" resultType="java.lang.Integer">
+        select count(drugID)
+        from drug
+        <where>
+            <if test="drug.drugID!=null and drug.drugID!=''">
+                drugID like concat('%',#{drug.drugID},'%')
+            </if>
+            <if test="drug.drugName!=null and drug.drugName!=''">
+                drugName like concat('%',#{drug.drugName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="drugAll" resultType="Drug">
+        select drugID, drugName, description
+        from drug
+        <where>
+            <if test="drug.drugID!=null and drug.drugID!=''">
+                drugID like concat('%',#{drug.drugID},'%')
+            </if>
+            <if test="drug.drugName!=null and drug.drugName!=''">
+                drugName like concat('%',#{drug.drugName},'%')
+            </if>
+        </where>
+        limit #{page.offset},#{page.pageSize}
+    </select>
+    <select id="drugFind" resultType="com.youma.vo.Drug">
+        select drugID, drugName, description, drugUrl
+        from drug
+        where drugID = #{param1}
+    </select>
+</mapper>

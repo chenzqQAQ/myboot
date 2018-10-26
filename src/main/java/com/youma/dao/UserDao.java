@@ -17,5 +17,6 @@ import java.util.List;
 public interface UserDao {
     @Select("select userID,userName,userPassword from users")
     public List<Users> userList();
+    public int userAdd(Users users);
 }
 
